@@ -8,12 +8,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -96,4 +98,15 @@ public class UserActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 123) {
+            if (resultCode == RESULT_OK) {
+                IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
+            /*startActivity(new Intent(this, UserActivity.class)
+                    .putExtra("my_token", idpResponse.getIdpToken()));*/
+            }
+        }
+    }
 }

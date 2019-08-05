@@ -61,9 +61,18 @@ public class FirebaseUtil {
 
     private static void signIn() {
         // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
+        /*List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                 new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build());
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.TwitterBuilder().build());*/
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
 
         // Create and launch sign-in intent
         caller.startActivityForResult(
@@ -71,6 +80,8 @@ public class FirebaseUtil {
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .setIsSmartLockEnabled(false)
+                        //.setLogo(R.drawable.my_great_logo)      // Set logo drawable
+                        //.setTheme(R.style.MySuperAppTheme)      // Set theme
                         .build(),
                 RC_SIGN_IN);
     }
