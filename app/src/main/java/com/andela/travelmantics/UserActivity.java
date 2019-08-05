@@ -35,6 +35,11 @@ public class UserActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.user_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem insertMenu = menu.findItem(R.id.insert_menu);
         if (FirebaseUtil.isAdmin) {
             insertMenu.setVisible(true);
@@ -42,7 +47,7 @@ public class UserActivity extends AppCompatActivity {
         else {
             insertMenu.setVisible(false);
         }
-        return true;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
