@@ -28,7 +28,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private ImageView imageDeal;
 
     public DealAdapter(UserActivity userActivity) {
-        //FirebaseUtil.openFbReference("traveldeals");
         FirebaseUtil.openFbReference("traveldeals", userActivity);
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
@@ -72,7 +71,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.rv_row, parent, false);
         return new DealViewHolder(itemView);
-
     }
 
     @Override
@@ -120,11 +118,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
 
         private void showImage(String url) {
             if (url != null && !url.isEmpty()) {
-                /*Picasso.with(imageDeal.getContext())
-                        .load(url)
-                        .resize(160, 160)
-                        .centerCrop()
-                        .into(imageDeal);*/
                 Picasso.get()
                         .load(url)
                         .resize(160, 160)

@@ -95,7 +95,6 @@ public class AdminActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         deleteDeal();
-                        //Toast.makeText(this, "Deal Deleted", Toast.LENGTH_LONG).show();
                         backToList();
                     }
                 });
@@ -142,17 +141,6 @@ public class AdminActivity extends AppCompatActivity {
                     ref.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //String url = taskSnapshot.getDownloadUrl().toString();
-                            /*if (taskSnapshot.getMetadata() != null && taskSnapshot.getMetadata().getReference() != null) {
-                                //String url = ref.getDownloadUrl().toString();
-                                String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                                String pictureName = taskSnapshot.getStorage().getPath();
-                                deal.setImageUrl(url);
-                                deal.setImageName(pictureName);
-                                Log.d("Url: ", url);
-                                Log.d("Name", pictureName);
-                                showImage(url);
-                            }*/
                             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                             while (!urlTask.isSuccessful());
                             Uri downloadUrl = urlTask.getResult();
@@ -235,11 +223,6 @@ public class AdminActivity extends AppCompatActivity {
     private void showImage(String url) {
         if (url != null && !url.isEmpty()) {
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-            /*Picasso.with(this)
-                    .load(url)
-                    .resize(width, width*2/3)
-                    .centerCrop()
-                    .into(imageView);*/
             Picasso.get()
                     .load(url)
                     .resize(width, width*2/3)
