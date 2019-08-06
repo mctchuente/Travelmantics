@@ -1,5 +1,6 @@
 package com.andela.travelmantics;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -36,6 +38,7 @@ public class AdminActivity extends AppCompatActivity {
     EditText txtPrice;
     ImageView imageView;
     TravelDeal deal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,7 @@ public class AdminActivity extends AppCompatActivity {
         txtDescription.setText(deal.getDescription());
         txtPrice.setText(deal.getPrice());
         showImage(deal.getImageUrl());
+
         Button btnImage = findViewById(R.id.btnImage);
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,14 +87,31 @@ public class AdminActivity extends AppCompatActivity {
                 backToList();
                 return true;
             case R.id.delete_menu:
-                deleteDeal();
-                Toast.makeText(this, "Deal Deleted", Toast.LENGTH_LONG).show();
-                backToList();
+                AlertDialog.Builder alert = new AlertDialog.Builder(AdminActivity.this);
+                alert.setTitle("Delete confirmation");
+                alert.setMessage("Are you sure?");
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        deleteDeal();
+                        //Toast.makeText(this, "Deal Deleted", Toast.LENGTH_LONG).show();
+                        backToList();
+                    }
+                });
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -161,15 +182,16 @@ public class AdminActivity extends AppCompatActivity {
         deal.setTitle(txtTitle.getText().toString());
         deal.setDescription(txtDescription.getText().toString());
         deal.setPrice(txtPrice.getText().toString());
-        if(deal.getId()==null) {
+        if(deal.getId() == null) {
             mDatabaseReference.push().setValue(deal);
         }
         else {
             mDatabaseReference.child(deal.getId()).setValue(deal);
         }
     }
+
     private void deleteDeal() {
-        if (deal == null) {
+        if (deal == null || deal.getId() == null) {
             Toast.makeText(this, "Please save the deal before deleting", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -189,8 +211,9 @@ public class AdminActivity extends AppCompatActivity {
                 }
             });
         }
-
+        Toast.makeText(this, "Deal Deleted", Toast.LENGTH_LONG).show();
     }
+
     private void backToList() {
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
